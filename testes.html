@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar na Tabela</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Adicionar Informações na Tabela</h2>
+
+<!-- Inputs -->
+<label for="nome">Nome:</label>
+<input type="text" id="nome" placeholder="Digite o nome">
+<button onclick="adicionarNaTabela()">Adicionar</button>
+
+<!-- Tabela -->
+<table id="tabela">
+    <tr>
+        <th>Nome</th>
+    </tr>
+</table>
+
+<script>
+function adicionarNaTabela() {
+    // Pega o valor do input
+    const nome = document.getElementById('nome').value;
+
+    if (nome.trim() === "") {
+        alert('Por favor, digite um nome.');
+        return;
+    }
+
+    // Seleciona a tabela
+    const tabela = document.getElementById('tabela');
+
+    // Cria uma nova linha
+    const novaLinha = tabela.insertRow();
+
+    // Cria uma célula na nova linha
+    const celulaNome = novaLinha.insertCell(0);
+
+    // Adiciona o texto na célula
+    celulaNome.innerText = nome;
+
+    // Limpa o input
+    document.getElementById('nome').value = '';
+}
+</script>
+
+</body>
+</html>
