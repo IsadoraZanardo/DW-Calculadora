@@ -113,6 +113,7 @@
 <!--TABELA--> <!--começa com a div vazia-->
 <div class="container mt-4" id="tabelaContainer"></div>
 
+
 <!--JAVASCRIPT-->   
 <script>
 //fazer com que DESCRIÇÃO e CATEGORIA possa selecionar o que está no dropdown, peguei pronto
@@ -194,6 +195,20 @@ document.querySelectorAll('.dropdown-menu a').forEach(item => {
   categoriaBtn.textContent = 'Categoria';
   descricaoBtn.textContent = 'Descrição';
 });
+
+//BOTÃO QUE SOMA
+document.getElementById('somarBtn').addEventListener('click', function () {
+  let total = 0;
+  const valores = document.querySelectorAll('#tabelaDados tbody tr td:first-child');
+  
+  valores.forEach(td => {
+    let valor = td.textContent.replace(',', '.');
+    total += parseFloat(valor);
+  });
+
+  document.getElementById('totalSoma').textContent = total.toFixed(2).replace('.', ',');
+});
+
 </script>
 
 
