@@ -59,23 +59,21 @@
 </div>
 
 
-
 <br>
-<div class="row">
+<div class="row justify-content-center text-center align-items-center"> <!--deixar todas as divs na mesma linha-->
 
 <!-- REAIS -->
-<div class="col-3">
+<div class="col-md-2 mb-2 m-1">
   <div class="input-group">
     <div class="input-group-text" id="btnGroupAddon2">R$</div>
     <input type="text" class="form-control" placeholder="000.000,00" aria-label="Input group example" aria-describedby="btnGroupAddon2">
   </div>
 </div>
-</div>
 
 <!-- CATEGORIA -->
-<div class="col-3">
+<div class="col-md-3 mb-2 m-1">
   <div class="btn-group w-100" role="group">
-    <button type="button" class="btn btn-primary dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">Categoria</button>
+    <button id="categoriaBtn" type="button" class="btn btn-warning dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">Categoria</button>
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="#">Crédito</a></li>
       <li><a class="dropdown-item" href="#">Débito</a></li>
@@ -86,11 +84,14 @@
 </div>
 
 <!--DATA-->
+<div class="col-md-2 mb-2 m-1">
+  <input type="date" class="form-control" id="dataCompra" name="dataCompra">
+</div>
 
 <!--DESCRIÇÃO-->
-<div class="col-3">
+<div class="col-md-3 mb-2 m-1">
   <div class="btn-group w-100" role="group">
-    <button type="button" class="btn btn-primary dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">Descrição</button>
+    <button id="descricaoBtn" type="button" class="btn btn-warning dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">Descrição</button>
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="#">Alimentação</a></li>
       <li><a class="dropdown-item" href="#">Assinaturas</a></li>
@@ -100,19 +101,99 @@
       <li><a class="dropdown-item" href="#">Mercado</a></li>
       <li><a class="dropdown-item" href="#">Transporte</a></li>
       <li><a class="dropdown-item" href="#">Outros</a></li>
-    </ul>
-  </div>
+   	</ul>
+ </div>
 </div>
 
-
+<!--BOTÃO ADICIONAR-->
+<div class="col-md-1 mb-2 m-1">
+	<button id="addBtn" type="button" class="btn btn-success w-100">+</button>
 </div>
 
-
-
-
+<!--TABELA--> <!--começa com a div vazia-->
+<div class="container mt-4" id="tabelaContainer"></div>
 
 <!--JAVASCRIPT-->   
 <script>
+//fazer com que DESCRIÇÃO e CATEGORIA possa selecionar o que está no dropdown, peguei pronto
+document.querySelectorAll('.dropdown-menu a').forEach(item => {
+  item.addEventListener('click', event => {
+    event.preventDefault();
+    const btn = event.target.closest('.btn-group').querySelector('button');
+    btn.textContent = event.target.textContent;
+  });
+});
+
+
+  //Executa a adição quando o botão for acionado
+  document.getElementById('addBtn').addEventListener('click', function() {
+
+  //Selecionar informação do campo VALOR
+  const valor = document.querySelector('input[type="text"]').value.trim();
+  
+  //Selecionar informação do campo DATA
+  const data = document.getElementById('dataCompra').value;
+  
+  //Selecionar informação do campo CATEGORIA
+  //.trim() remove espaços em branco das extremidades, peguei pronto
+  const categoriaBtn = document.getElementById('categoriaBtn');
+  let categoria = categoriaBtn.textContent.trim();
+  
+  //Selecionar informação do campo DESCRIÇÃO
+  //.trim() remove espaços em branco das extremidades, peguei pronto
+  const descricaoBtn = document.getElementById('descricaoBtn');
+  let descricao = descricaoBtn.textContent.trim();
+
+  //PREENCHER TODOS ITENS OBRIGATORIAMENTE
+  if (valor == '' || data == '' || categoria == "Categoria" || descricao == "Descrição") {
+  alert("Preencha todos os campos corretamente.");
+  return;
+}
+
+
+   //CRIAR DIV DA TABELA (só a primeira vez)
+   let tabela = document.getElementById('tabelaDados');
+   if (tabela == null) {
+   tabela = document.createElement('table');
+    tabela.id = 'tabelaDados';
+    tabela.className = 'table table-striped text-center';
+    tabela.innerHTML = `
+      <thead>
+        <tr>
+          <th>Valor (R$)</th>
+          <th>Categoria</th>
+          <th>Data</th>
+          <th>Descrição</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+    
+   //TABELA PÓS FORMULÁRIO
+   document.querySelector('.row.justify-content-center').after(tabela);
+  }
+  
+
+   //CRIAR NOVA LINHA E INSERIR DADOS
+   const tbody = tabela.querySelector('tbody');
+   const tr = document.createElement('tr');
+   
+   tr.innerHTML = `
+     <td>${valor}</td>
+     <td>${categoria}</td>
+     <td>${data}</td>
+     <td>${descricao}</td>
+   `;
+   
+   tbody.appendChild(tr);
+   
+
+  //LIMPAR CAMPOS DE INSERÇÃO, peguei pronto
+  document.querySelector('input[type="text"]').value = '';
+  document.getElementById('dataCompra').value = '';
+  categoriaBtn.textContent = 'Categoria';
+  descricaoBtn.textContent = 'Descrição';
+});
 </script>
 
 
